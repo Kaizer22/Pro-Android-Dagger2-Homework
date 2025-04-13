@@ -1,24 +1,15 @@
 package ru.otus.daggerhomework
 
 import android.app.Application
-import android.content.Context
+import ru.otus.daggerhomework.di.ApplicationComponent
 import ru.otus.daggerhomework.di.DaggerApplicationComponent
 
-object SingleAppComponent {
-    private lateinit var appContext: Context
-    val INSTANCE by lazy {
-        DaggerApplicationComponent.factory()
-            .create(appContext)
-    }
-
-    fun initAppComponent(context: Context) {
-        this.appContext = context
-    }
-}
-
 class App : Application() {
+    lateinit var applicationComponent: ApplicationComponent
+
     override fun onCreate() {
-        SingleAppComponent.initAppComponent(applicationContext)
+        applicationComponent = DaggerApplicationComponent.factory()
+            .create(applicationContext)
         super.onCreate()
     }
 }

@@ -8,14 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import ru.otus.daggerhomework.di.ActivityContext
-import ru.otus.daggerhomework.di.MutableUiState
 import ru.otus.daggerhomework.utils.ColorGenerator
 import javax.inject.Inject
 
 class ProducerViewModel (
     private val colorGenerator: ColorGenerator,
     @ActivityContext private val context: Context,
-    @MutableUiState
     private val colorGeneratorState: MutableStateFlow<PopulateColorState>
 ): ViewModel() {
 
@@ -34,7 +32,7 @@ class ProducerViewModel (
     class Factory @Inject constructor(
         private val colorGenerator: ColorGenerator,
         @ActivityContext private val context: Context,
-        @MutableUiState private val colorGeneratorState: MutableStateFlow<PopulateColorState>
+        private val colorGeneratorState: MutableStateFlow<PopulateColorState>
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = ProducerViewModel(

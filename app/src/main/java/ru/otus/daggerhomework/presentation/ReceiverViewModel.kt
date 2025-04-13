@@ -7,12 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.StateFlow
 import ru.otus.daggerhomework.di.ApplicationContext
-import ru.otus.daggerhomework.di.UiState
 import javax.inject.Inject
 
 class ReceiverViewModel (
     @ApplicationContext private val context: Context,
-    @UiState val colorGeneratorState: StateFlow<PopulateColorState>
+    val colorGeneratorState: StateFlow<PopulateColorState>
 ): ViewModel() {
 
     fun observeColors() {
@@ -22,7 +21,7 @@ class ReceiverViewModel (
 
     class Factory @Inject constructor(
         @ApplicationContext private val context: Context,
-        @UiState val colorGeneratorState: StateFlow<PopulateColorState>
+        private val colorGeneratorState: StateFlow<PopulateColorState>
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = ReceiverViewModel(

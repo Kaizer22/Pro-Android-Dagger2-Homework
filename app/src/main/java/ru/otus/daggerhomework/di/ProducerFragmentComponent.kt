@@ -3,9 +3,9 @@ package ru.otus.daggerhomework.di
 import dagger.Binds
 import dagger.Module
 import dagger.Subcomponent
+import ru.otus.daggerhomework.presentation.ProducerFragment
 import ru.otus.daggerhomework.utils.ColorGenerator
 import ru.otus.daggerhomework.utils.ColorGeneratorImpl
-import ru.otus.daggerhomework.presentation.ProducerFragment
 
 @Subcomponent(
     modules = [ProducerFragmentModule::class]

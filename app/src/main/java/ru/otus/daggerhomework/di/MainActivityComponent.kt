@@ -7,21 +7,17 @@ import dagger.Provides
 import dagger.Subcomponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import ru.otus.daggerhomework.presentation.PopulateColorState
 import javax.inject.Qualifier
 
 @Qualifier
 annotation class ActivityContext
 
-@Qualifier
-annotation class UiState
-
-@Qualifier
-annotation class MutableUiState
-
 @Subcomponent(
     modules = [MainActivityModule::class],
 )
+@ActivityScope
 interface MainActivityComponent {
 
     @Subcomponent.Factory
@@ -30,6 +26,10 @@ interface MainActivityComponent {
             @ActivityContext @BindsInstance activityContext: Context,
         ): MainActivityComponent
     }
+
+
+    fun providesMutableUiState(): MutableStateFlow<PopulateColorState>
+    fun providesUiState(): StateFlow<PopulateColorState>
 
     fun producerFragmentComponent(): ProducerFragmentComponent.Factory
     fun receiverFragmentComponent(): ReceiverFragmentComponent.Factory
@@ -42,13 +42,15 @@ interface MainActivityComponent {
     ]
 )
 class MainActivityModule {
-    private val _uiState = MutableStateFlow(PopulateColorState())
 
     @Provides
-    @UiState
-    fun providesUiState(): StateFlow<PopulateColorState> = _uiState
+    @ActivityScope
+    fun providesUiState(
+        mutable: MutableStateFlow<PopulateColorState>
+    ): StateFlow<PopulateColorState> = mutable.asStateFlow()
 
     @Provides
-    @MutableUiState
-    fun provideMutableUiState(): MutableStateFlow<PopulateColorState> = _uiState
+    @ActivityScope
+    fun provideMutableUiState(): MutableStateFlow<PopulateColorState> =
+        MutableStateFlow(PopulateColorState())
 }
